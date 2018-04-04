@@ -77,10 +77,11 @@ class Scanner {
       case ' ': break;
 
       case '/':
-        if (match('/')) {
-          // A comment goes until the end of the line.
+        if (match('/') ) {
           while (peek() != '\n' && !isAtEnd()) advance();
-        } else {
+        } else if(match('*')){
+          comment();
+        } else{
           addToken(SLASH);
         }
         break;
@@ -103,6 +104,21 @@ class Scanner {
     TokenType type = keywords.get(text);
     if (type == null) type = IDENTIFIER;
     addToken(type);
+  }
+
+  public void comment(){
+    int nest = 1;
+    while (nest !=0 && !isAtEnd()){
+      if(peek() == '/' && peekNext() == '*') nest++;
+      if(peek() == '*' && peekNext() == '/') {
+        nest--;
+        advance();
+      }
+      advance();
+    }
+
+    if(isAtEnd() && nest!=0)
+      Lox.error(line, "Unexpected character.");
   }
 
   private boolean isAlpha(char c) {
