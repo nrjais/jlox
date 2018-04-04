@@ -1,4 +1,4 @@
-package com.tools;
+//package com.tools;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,9 +39,7 @@ public class GenerateAst {
     writer.close();
   }
 
-  private static void defineType(
-      PrintWriter writer, String baseName,
-      String className, String fieldList) {
+  private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
     writer.println("  static class " + className + " extends " +
         baseName + " {");
 
