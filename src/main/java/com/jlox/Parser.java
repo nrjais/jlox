@@ -1,6 +1,7 @@
 package com.jlox;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import static com.jlox.TokenType.*;
 
@@ -17,6 +18,11 @@ class Parser {
     return equality();
   }
 
+  private Stmt statement() {
+    if (match(PRINT)) return printStatement();
+    return expressionStatement();
+  }
+
   private Expr equality() {
     Expr expr = comparison();
 
@@ -29,12 +35,12 @@ class Parser {
     return expr;
   }
 
-  Expr parse() {
-    try {
-      return expression();
-    } catch (ParseError error) {
-      return null;
+  List<Stmt> parse() {
+    List<Stmt> statements = new ArrayList<>();
+    while (!isAtEnd()) {
+      statements.add(statement());
     }
+    return statements;
   }
 
   private Expr comparison() {
